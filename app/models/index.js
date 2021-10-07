@@ -62,7 +62,6 @@ db.semesters.belongsToMany(db.courses, {
 //how do you do has one?
 
 
-db.semesters.
 
 
 
