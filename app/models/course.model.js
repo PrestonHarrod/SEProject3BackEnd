@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
         unique: true,
         allowNull: false,
       },
+      name:{
+        type: DataTypes.STRING
+      },
       semesterID: {
         type: DataTypes.INTEGER
       },

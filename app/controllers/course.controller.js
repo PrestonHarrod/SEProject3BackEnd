@@ -16,6 +16,7 @@ exports.create = (req, res) => {
     const course = {
       courseID: req.body.courseID,
       semesterID: req.body.semesterID,
+      name: req.body.name,
       dept: req.body.dept,
       courseNum: req.body.courseNum,
       desc: req.body.desc,
