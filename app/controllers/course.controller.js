@@ -1,3 +1,4 @@
+const { response } = require("express");
 const db = require("../models");
 const Course = db.courses;
 const Op = db.Sequelize.Op;
@@ -40,12 +41,12 @@ exports.create = (req, res) => {
 
 // Retrieve all Courses from the database.
 exports.findAll = (req, res) => {
-    const courseID = req.query.courseID;
+    const courseID = req.params.courseID;
     var condition = courseID ? { courseID: { [Op.like]: `%${courseID}%` } } : null;
   
     Course.findAll({ where: condition })
       .then(data => {
-        res.send(data);
+        res.send(data)
       })
       .catch(err => {
         res.status(500).send({
@@ -58,11 +59,12 @@ exports.findAll = (req, res) => {
 
 // Find a single Course with an id
 exports.findOne = (req, res) => {
-    const courseID = req.query.courseID;
+    const id = req.params.id;
+    console.log("courseID= " + id);
 
-  Course.findByPk(courseID)
+  Course.findByPk(id)
     .then(data => {
-      res.send(data);
+      res.send(data)
     })
     .catch(err => {
       res.status(500).send({
