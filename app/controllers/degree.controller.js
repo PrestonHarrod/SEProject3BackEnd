@@ -36,8 +36,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const degreeID = req.query.degreeID;
-    var condition = degreeID ? { degreeID: { [Op.like]: `%${degreeID}%` } } : null;
+  const id = req.query.id;
+    //var condition = degreeID ? { degreeID: { [Op.like]: `%${degreeID}%` } } : null;
   
     Degree.findAll({ where: condition })
       .then(data => {
@@ -54,9 +54,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Degree with an id
 exports.findOne = (req, res) => {
-    const degreeID = req.query.degreeID;
+  const id = req.query.id;
 
-  Degree.findByPk(degreeID)
+  Degree.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -70,10 +70,10 @@ exports.findOne = (req, res) => {
 
 // Update a Degree by the id in the request
 exports.update = (req, res) => {
-    const degreeID = req.query.degreeID;
+  const id = req.query.id;
   
     Degree.update(req.body, {
-      where: { degreeID: degreeID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -95,10 +95,10 @@ exports.update = (req, res) => {
 
 // Delete a degree with the specified id in the request
 exports.delete = (req, res) => {
-    const degreeID = req.query.degreeID;
+  const id = req.query.id;
   
     Degree.destroy({
-      where: { degreeID: degreeID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {

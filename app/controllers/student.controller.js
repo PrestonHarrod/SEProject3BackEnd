@@ -58,9 +58,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Student with an id
 exports.findOne = (req, res) => {
-    const studentID = req.query.studentID;
+  const id = req.query.id;
 
-  Student.findByPk(studentID, {include: ["degree", "advisor"]}) //this will return the degrees and advisors for that given student
+  Student.findByPk(id, {include: ["degree", "advisor"]}) //this will return the degrees and advisors for that given student
     .then(data => {
       res.send(data);
     })
@@ -74,10 +74,10 @@ exports.findOne = (req, res) => {
 
 // Update a Student by the id in the request
 exports.update = (req, res) => {
-    const studentID = req.query.studentID;
+    const id = req.query.id;
   
     Student.update(req.body, {
-      where: { studentID: studentID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -99,10 +99,10 @@ exports.update = (req, res) => {
 
 // Delete a Student with the specified id in the request
 exports.delete = (req, res) => {
-    const studentID = req.query.studentID;
+  const id = req.query.id;
   
     Student.destroy({
-      where: { studentID: studentID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {

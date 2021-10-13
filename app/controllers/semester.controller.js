@@ -54,9 +54,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Semester with an id
 exports.findOne = (req, res) => {
-    const semesterID = req.query.semesterID;
+  const id = req.query.id;
 
-  Semester.findByPk(semesterID)
+  Semester.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -70,10 +70,10 @@ exports.findOne = (req, res) => {
 
 // Update a Semester by the id in the request
 exports.update = (req, res) => {
-    const semesterID = req.query.semesterID;
+  const id = req.query.id;
   
     Semester.update(req.body, {
-      where: { semesterID: semesterID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -95,10 +95,10 @@ exports.update = (req, res) => {
 
 // Delete a Semester with the specified id in the request
 exports.delete = (req, res) => {
-    const semesterID = req.query.semesterID;
+    const id = req.query.id;
   
     Semester.destroy({
-      where: { semesterID: semesterID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
