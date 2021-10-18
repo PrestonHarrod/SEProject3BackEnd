@@ -6,23 +6,18 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Course
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.courseID) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
+    
   
     // Create a Course
     const course = {
-      courseID: req.body.courseID,
       semesterID: req.body.semesterID,
       name: req.body.name,
       dept: req.body.dept,
       courseNum: req.body.courseNum,
       desc: req.body.desc,
       hours: req.body.hours,
-      level: req.body.level
+      level: req.body.level,
+      updatedAt: db.Sequelize.NOW,
     
     };
   
@@ -60,7 +55,6 @@ exports.findAll = (req, res) => {
 // Find a single Course with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    console.log("courseID= " + id);
 
   Course.findByPk(id)
     .then(data => {
@@ -76,9 +70,10 @@ exports.findOne = (req, res) => {
 
 // Update a Course by the id in the request
 exports.update = (req, res) => {
-    const courseID = req.query.courseID;
+    const courseID = req.params.id;
+    console.log("courseID=" + courseID);
   
-    Course.update(req.body, {
+    Course.update(req.body, { updatedAt: db.Sequelize.NOW,
       where: { courseID: courseID }
     })
       .then(num => {
@@ -88,20 +83,21 @@ exports.update = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot update Course with id=${courseID}. Maybe Course was not found or req.body is empty!`
+            message: `Cannot update Course with id=${id}. Maybe Course was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Course with id=" + courseID
+          message: "Error updating Course with id=" + id
         });
       });
   };
 
 // Delete a Course with the specified id in the request
 exports.delete = (req, res) => {
-    const courseID = req.query.courseID;
+    const courseID = req.params.id;
+    console.log(courseID);
   
     Course.destroy({
       where: { courseID: courseID }
