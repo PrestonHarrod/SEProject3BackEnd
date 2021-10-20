@@ -1,3 +1,4 @@
+const { response } = require("express");
 const db = require("../models");
 const Course = db.courses;
 const Op = db.Sequelize.Op;
@@ -5,23 +6,18 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Course
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.courseID) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
+    
   
     // Create a Course
     const course = {
-      courseID: req.body.courseID,
       semesterID: req.body.semesterID,
       name: req.body.name,
       dept: req.body.dept,
       courseNum: req.body.courseNum,
       desc: req.body.desc,
       hours: req.body.hours,
-      level: req.body.level
+      level: req.body.level,
+      updatedAt: db.Sequelize.NOW,
     
     };
   
@@ -40,12 +36,14 @@ exports.create = (req, res) => {
 
 // Retrieve all Courses from the database.
 exports.findAll = (req, res) => {
+
     const id = req.query.id;
     //var condition = courseID ? { courseID: { [Op.like]: `%${courseID}%` } } : null;
+
   
     Course.findAll({ where: condition })
       .then(data => {
-        res.send(data);
+        res.send(data)
       })
       .catch(err => {
         res.status(500).send({
@@ -60,9 +58,10 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.query.id;
 
+
   Course.findByPk(id)
     .then(data => {
-      res.send(data);
+      res.send(data)
     })
     .catch(err => {
       res.status(500).send({
@@ -78,6 +77,7 @@ exports.update = (req, res) => {
   
     Course.update(req.body, {
       where: { id: id }
+
     })
       .then(num => {
         if (num == 1) {
@@ -86,13 +86,13 @@ exports.update = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot update Course with id=${courseID}. Maybe Course was not found or req.body is empty!`
+            message: `Cannot update Course with id=${id}. Maybe Course was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Course with id=" + courseID
+          message: "Error updating Course with id=" + id
         });
       });
   };
@@ -100,6 +100,7 @@ exports.update = (req, res) => {
 // Delete a Course with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.query.id;
+
   
     Course.destroy({
       where: { id: id }
