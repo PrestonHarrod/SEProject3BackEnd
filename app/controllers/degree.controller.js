@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new degree
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.degreeID) {
+    if (!req.body.id) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -14,7 +14,7 @@ exports.create = (req, res) => {
   
     // Create a Degree
     const degree = {
-      degreeID: req.body.degreeID,
+      courseID: req.body.courseID,
       dept: req.body.dept,
       degree: req.body.degree,
       hours: req.body.hours
@@ -36,8 +36,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const degreeID = req.query.degreeID;
-    var condition = degreeID ? { degreeID: { [Op.like]: `%${degreeID}%` } } : null;
+    const id = req.query.id;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Degree.findAll({ where: condition })
       .then(data => {
@@ -54,9 +54,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Degree with an id
 exports.findOne = (req, res) => {
-    const degreeID = req.query.degreeID;
+    const id = req.query.id;
 
-  Degree.findByPk(degreeID)
+  Degree.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -70,10 +70,10 @@ exports.findOne = (req, res) => {
 
 // Update a Degree by the id in the request
 exports.update = (req, res) => {
-    const degreeID = req.query.degreeID;
+    const id = req.query.id;
   
     Degree.update(req.body, {
-      where: { degreeID: degreeID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -82,23 +82,23 @@ exports.update = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot update degree with id=${degreeID}. Maybe degree was not found or req.body is empty!`
+            message: `Cannot update degree with id=${id}. Maybe degree was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating degree with id=" + degreeID
+          message: "Error updating degree with id=" + id
         });
       });
   };
 
 // Delete a degree with the specified id in the request
 exports.delete = (req, res) => {
-    const degreeID = req.query.degreeID;
+    const id = req.query.id;
   
     Degree.destroy({
-      where: { degreeID: degreeID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -107,13 +107,13 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete degree with id=${degreeID}. Maybe degree was not found!`
+            message: `Cannot delete degree with id=${id}. Maybe degree was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete degree with id=" + degreeID
+          message: "Could not delete degree with id=" + id
         });
       });
   };

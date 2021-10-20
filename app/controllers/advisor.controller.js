@@ -6,7 +6,7 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   console.log("create advisor start");
     // Validate request
-    if (!req.body.advisorID) {
+    if (!req.body.id) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -40,8 +40,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Advisors from the database.
 exports.findAll = (req, res) => {
-    const advisorID = req.query.advisorID;
-    var condition = advisorID ? { advisorID: { [Op.like]: `%${advisorID}%` } } : null;
+    const id = req.query.id;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Advisor.findAll({ where: condition })
       .then(data => {
@@ -58,9 +58,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Advisor with an id
 exports.findOne = (req, res) => {
-    const advisorID = req.query.advisorID;
+    const id = req.query.id;
 
-  Advisor.findByPk(advisorID, include ["advisor"])
+  Advisor.findByPk(id, include ["advisor"])
     .then((advisor) => {
       return advisor;
     })
@@ -76,10 +76,10 @@ exports.findOne = (req, res) => {
 
 // Update a Advisor by the id in the request
 exports.update = (req, res) => {
-    const advisorID = req.query.advisorID;
+    const id = req.query.id;
   
     Advisor.update(req.body, {
-      where: { advisorID: advisorID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -101,10 +101,10 @@ exports.update = (req, res) => {
 
 // Delete a Advisor with the specified id in the request
 exports.delete = (req, res) => {
-    const advisorID = req.query.advisorID;
+    const id = req.query.id;
   
     Advisor.destroy({
-      where: { advisorID: advisorID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {

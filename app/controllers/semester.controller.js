@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Semester
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.semesterID) {
+    if (!req.body.id) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -36,8 +36,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Semesters from the database.
 exports.findAll = (req, res) => {
-    const semesterID = req.query.semesterID;
-    var condition = semesterID ? { semesterID: { [Op.like]: `%${semesterID}%` } } : null;
+    const id = req.query.id;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Semester.findAll({ where: condition })
       .then(data => {
@@ -54,9 +54,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Semester with an id
 exports.findOne = (req, res) => {
-    const semesterID = req.query.semesterID;
+    const id = req.query.id;
 
-  Semester.findByPk(semesterID)
+  Semester.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -70,10 +70,10 @@ exports.findOne = (req, res) => {
 
 // Update a Semester by the id in the request
 exports.update = (req, res) => {
-    const semesterID = req.query.semesterID;
+    const id = req.query.id;
   
     Semester.update(req.body, {
-      where: { semesterID: semesterID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -82,23 +82,23 @@ exports.update = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot update Semester with id=${semesterID}. Maybe Semester was not found or req.body is empty!`
+            message: `Cannot update Semester with id=${id}. Maybe Semester was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Semester with id=" + semesterID
+          message: "Error updating Semester with id=" + id
         });
       });
   };
 
 // Delete a Semester with the specified id in the request
 exports.delete = (req, res) => {
-    const semesterID = req.query.semesterID;
+    const id = req.query.id;
   
     Semester.destroy({
-      where: { semesterID: semesterID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -107,13 +107,13 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete Semester with id=${semesterID}. Maybe Semester was not found!`
+            message: `Cannot delete Semester with id=${id}. Maybe Semester was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Semester with id=" + semesterID
+          message: "Could not delete Semester with id=" + id
         });
       });
   };

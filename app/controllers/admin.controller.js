@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Admin
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.adminID) {
+    if (!req.body.id) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -40,10 +40,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Admins from the database.
 exports.findAll = (req, res) => {
-    const adminID = req.query.adminID;
-    var condition = adminID ? { adminID: { [Op.like]: `%${adminID}%` } } : null;
+    const id = req.query.id;
+    //var condition = adminID ? { adminID: { [Op.like]: `%${adminID}%` } } : null;
   
-    Admin.findAll({ where: condition })
+    Admin.findAll()
       .then(data => {
         res.send(data);
       })
@@ -58,9 +58,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Admin with an id
 exports.findOne = (req, res) => {
-    const adminID = req.query.adminID;
+    const id = req.query.id;
 
-  Admin.findByPk(adminID)
+  Admin.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -74,10 +74,10 @@ exports.findOne = (req, res) => {
 
 // Update a Admin by the id in the request
 exports.update = (req, res) => {
-    const adminID = req.query.adminID;
+    const id = req.query.id;
   
     Admin.update(req.body, {
-      where: { adminID: adminID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -99,10 +99,10 @@ exports.update = (req, res) => {
 
 // Delete a Admin with the specified id in the request
 exports.delete = (req, res) => {
-    const adminID = req.query.adminID;
+    const id = req.query.id;
   
     Admin.destroy({
-      where: { adminID: adminID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {

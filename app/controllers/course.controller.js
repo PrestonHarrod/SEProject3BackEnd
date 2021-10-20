@@ -10,6 +10,7 @@ exports.create = (req, res) => {
   
     // Create a Course
     const course = {
+      courseID = req.params.courseID,
       semesterID: req.body.semesterID,
       name: req.body.name,
       dept: req.body.dept,
@@ -36,8 +37,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Courses from the database.
 exports.findAll = (req, res) => {
-    const courseID = req.params.courseID;
-    var condition = courseID ? { courseID: { [Op.like]: `%${courseID}%` } } : null;
+    const id = req.params.id;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Course.findAll({ where: condition })
       .then(data => {
@@ -70,11 +71,11 @@ exports.findOne = (req, res) => {
 
 // Update a Course by the id in the request
 exports.update = (req, res) => {
-    const courseID = req.params.id;
-    console.log("courseID=" + courseID);
+    const id = req.params.id;
+    console.log("id=" + id);
   
     Course.update(req.body, { updatedAt: db.Sequelize.NOW,
-      where: { courseID: courseID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -96,11 +97,11 @@ exports.update = (req, res) => {
 
 // Delete a Course with the specified id in the request
 exports.delete = (req, res) => {
-    const courseID = req.params.id;
-    console.log(courseID);
+    const id = req.params.id;
+    console.log(id);
   
     Course.destroy({
-      where: { courseID: courseID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -109,13 +110,13 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete Course with id=${courseID}. Maybe Course was not found!`
+            message: `Cannot delete Course with id=${id}. Maybe Course was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Course with id=" + courseID
+          message: "Could not delete Course with id=" + id
         });
       });
   };
