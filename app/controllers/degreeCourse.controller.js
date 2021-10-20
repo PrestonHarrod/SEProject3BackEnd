@@ -53,7 +53,7 @@ exports.findAll = (req, res) => {
 
 // Find a single Degree with an id
 exports.findOne = (req, res) => {
-  const id = req.query.id;
+    const id = req.query.id;
 
   Degree.findByPk(id)
     .then(data => {
