@@ -36,8 +36,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Courses from the database.
 exports.findAll = (req, res) => {
-    const courseID = req.params.courseID;
-    var condition = courseID ? { courseID: { [Op.like]: `%${courseID}%` } } : null;
+
+    const id = req.query.id;
+    //var condition = courseID ? { courseID: { [Op.like]: `%${courseID}%` } } : null;
+
   
     Course.findAll({ where: condition })
       .then(data => {
@@ -54,7 +56,8 @@ exports.findAll = (req, res) => {
 
 // Find a single Course with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+  const id = req.query.id;
+
 
   Course.findByPk(id)
     .then(data => {
@@ -70,11 +73,11 @@ exports.findOne = (req, res) => {
 
 // Update a Course by the id in the request
 exports.update = (req, res) => {
-    const courseID = req.params.id;
-    console.log("courseID=" + courseID);
+  const id = req.query.id;
   
-    Course.update(req.body, { updatedAt: db.Sequelize.NOW,
-      where: { courseID: courseID }
+    Course.update(req.body, {
+      where: { id: id }
+
     })
       .then(num => {
         if (num == 1) {
@@ -96,11 +99,11 @@ exports.update = (req, res) => {
 
 // Delete a Course with the specified id in the request
 exports.delete = (req, res) => {
-    const courseID = req.params.id;
-    console.log(courseID);
+  const id = req.query.id;
+
   
     Course.destroy({
-      where: { courseID: courseID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {

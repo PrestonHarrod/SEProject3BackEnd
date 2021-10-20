@@ -58,9 +58,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Advisor with an id
 exports.findOne = (req, res) => {
-    const advisorID = req.query.advisorID;
+  const id = req.query.id;
 
-  Advisor.findByPk(advisorID, include ["advisor"])
+  Advisor.findByPk(id, include ["advisor"])
     .then((advisor) => {
       return advisor;
     })
@@ -76,10 +76,10 @@ exports.findOne = (req, res) => {
 
 // Update a Advisor by the id in the request
 exports.update = (req, res) => {
-    const advisorID = req.query.advisorID;
+  const id = req.query.id;
   
     Advisor.update(req.body, {
-      where: { advisorID: advisorID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -101,10 +101,10 @@ exports.update = (req, res) => {
 
 // Delete a Advisor with the specified id in the request
 exports.delete = (req, res) => {
-    const advisorID = req.query.advisorID;
+  const id = req.query.id;
   
     Advisor.destroy({
-      where: { advisorID: advisorID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
