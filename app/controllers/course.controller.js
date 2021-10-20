@@ -10,7 +10,7 @@ exports.create = (req, res) => {
   
     // Create a Course
     const course = {
-      courseID = req.params.courseID,
+      courseID: req.params.courseID,
       semesterID: req.body.semesterID,
       name: req.body.name,
       dept: req.body.dept,
