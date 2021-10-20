@@ -40,8 +40,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Admins from the database.
 exports.findAll = (req, res) => {
-    const id = req.query.id;
-    //var condition = adminID ? { adminID: { [Op.like]: `%${adminID}%` } } : null; for filtering results based on a condition. see tutorial
+    const adminID = req.query.adminID;
+    var condition = adminID ? { adminID: { [Op.like]: `%${adminID}%` } } : null;
   
     Admin.findAll({ where: condition })
       .then(data => {
@@ -58,11 +58,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Admin with an id
 exports.findOne = (req, res) => {
-    const id = req.query.id;
-    
-    //var condition = adminID ? { adminID: { [Op.like]: `%${adminID}%` } } : null; for filtering results based on a condition. see tutorial
+    const adminID = req.query.adminID;
 
-  Admin.findByPk(id)
+  Admin.findByPk(adminID)
     .then(data => {
       res.send(data);
     })
@@ -76,10 +74,10 @@ exports.findOne = (req, res) => {
 
 // Update a Admin by the id in the request
 exports.update = (req, res) => {
-  const id = req.query.id;
+    const adminID = req.query.adminID;
   
     Admin.update(req.body, {
-      where: { id: id }
+      where: { adminID: adminID }
     })
       .then(num => {
         if (num == 1) {
@@ -101,10 +99,10 @@ exports.update = (req, res) => {
 
 // Delete a Admin with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.query.id;
+    const adminID = req.query.adminID;
   
     Admin.destroy({
-      where: { id: id }
+      where: { adminID: adminID }
     })
       .then(num => {
         if (num == 1) {
