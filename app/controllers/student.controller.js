@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Student
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.studentID) {
+    if (!req.body.id) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -40,8 +40,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Students from the database.
 exports.findAll = (req, res) => {
-    const studentID = req.query.studentID;
-    var condition = studentID ? { studentID: { [Op.like]: `%${studentID}%` } } : null;
+    const id = req.query.id;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Student.findAll({ where: condition })
       .then(data => {
@@ -58,9 +58,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Student with an id
 exports.findOne = (req, res) => {
-    const studentID = req.query.studentID;
+    const id = req.query.id;
 
-  Student.findByPk(studentID, {include: ["degree", "advisor"]}) //this will return the degrees and advisors for that given student
+  Student.findByPk(id, {include: ["degree", "advisor"]}) //this will return the degrees and advisors for that given student
     .then(data => {
       res.send(data);
     })
@@ -74,10 +74,10 @@ exports.findOne = (req, res) => {
 
 // Update a Student by the id in the request
 exports.update = (req, res) => {
-    const studentID = req.query.studentID;
+    const id = req.query.id;
   
     Student.update(req.body, {
-      where: { studentID: studentID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -86,23 +86,23 @@ exports.update = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot update Student with id=${studentID}. Maybe Student was not found or req.body is empty!`
+            message: `Cannot update Student with id=${id}. Maybe Student was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Student with id=" + studentID
+          message: "Error updating Student with id=" + id
         });
       });
   };
 
 // Delete a Student with the specified id in the request
 exports.delete = (req, res) => {
-    const studentID = req.query.studentID;
+    const id = req.query.id;
   
     Student.destroy({
-      where: { studentID: studentID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -111,13 +111,13 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete Student with id=${studentID}. Maybe Student was not found!`
+            message: `Cannot delete Student with id=${id}. Maybe Student was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Student with id=" + studentID
+          message: "Could not delete Student with id=" + id
         });
       });
   };
