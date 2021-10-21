@@ -42,10 +42,10 @@ exports.login = (req, res) => {
       .then(data => {
         if (data != null) {
           let advisorData= data.dataValues; 
-          token = jwt.sign({ id: advisor.email }, authcofig.secret, {expiresIn: '24h'}); //JWT translates that to 24 hours. 1d also works for 1 day
-          user.userId = advisor.advisorID; //using 
+          token = jwt.sign({ id: advisorData.email }, authcofig.secret, {expiresIn: '24h'}); //JWT translates that to 24 hours. 1d also works for 1 day
+          user.userId = advisorData.advisorID; //using 
           user.email = advisorData.email;
-          user.firstName = advisor.firstName;
+          user.firstName = advisorData.firstName;
           user.advisorID = advisorData.advisorID;
           user.studentID = null; //since this is an advisor
         }
@@ -64,7 +64,7 @@ exports.login = (req, res) => {
           .then(data => {
             if (data != null) {
               let studentData= data.dataValues; 
-              token = jwt.sign({ id: advisor.email }, authcofig.secret, {expiresIn: '24h'}); //JWT translates that to 24 hours. 1d also works for 1 day
+              token = jwt.sign({ id: studentData.email }, authcofig.secret, {expiresIn: '24h'}); //JWT translates that to 24 hours. 1d also works for 1 day
               user.email = studentData.email;
               user.firstName = studentData.firstName;
               user.advisorID = null;
