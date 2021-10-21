@@ -14,11 +14,11 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      advisorId: {
+      advisorID: {
         type: DataTypes.STRING,
         allowNull: true
       },
-      studentId: {
+      studentID: {
         type: DataTypes.STRING,
         allowNull: true
       }, 

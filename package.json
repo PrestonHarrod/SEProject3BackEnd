@@ -17,11 +17,13 @@
   "author": "jared",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mariadb": "^2.5.4",
-    "mysql2": "^2.3.0",
-    "sequelize": "^6.6.5"
+    "mysql2": "^2.3.2",
+    "sequelize": "^6.7.0"
   }
 }
