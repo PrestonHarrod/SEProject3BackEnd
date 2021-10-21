@@ -5,11 +5,7 @@ const Student = db.students;
 const Op = db.Sequelize.Op;
 const authcofig = require('../config/auth.config.js');
 
-
-//var jwt = require("jsonwebtoken");
 const { advisor } = require("../models");
-
-// Login and create Session
 exports.login = async (req, res) => {
 
   if (!req.body.accessToken) {
@@ -20,7 +16,6 @@ exports.login = async (req, res) => {
     return;
   }
 
-// get Google Info
   const {OAuth2Client} = require('google-auth-library');
   const client = new OAuth2Client('738583612295-7lvrgo65m2qnpq05eg20turnoamher1l.apps.googleusercontent.com');
   const ticket = await client.verifyIdToken({
@@ -29,17 +24,11 @@ exports.login = async (req, res) => {
   });
   const payload= ticket.getPayload();
   console.log('Google payload is '+JSON.stringify(payload));
-  const userid = payload['sub'];
   let email = payload['email'];
-  let emailVerified = payload['email_verified'];
-  let name = payload["name"];
-  let pictureUrl = payload["picture"];
 
   let user = {};
   let token = null;
 
-// get User by email
-  console.log("search Advisor");
   let  foundUser = false;
   await Advisor.findOne({
     where : {email:email}
@@ -57,13 +46,11 @@ exports.login = async (req, res) => {
 
     }
     }).catch(err => {
-        console.log("Error 1");
         res.status(401).send({
           message: err.message || "Error looking up User"
         });
         return;
     });
-      console.log("student search");
       await Student.findOne({
         where : {email:email}
       }
@@ -81,7 +68,6 @@ exports.login = async (req, res) => {
          }
 
       }).catch(err => {
-        console.log("Error 1");
         res.status(401).send({
           message: err.message || "Count not find user"
        });
@@ -94,7 +80,6 @@ exports.login = async (req, res) => {
       });
       return;
     }
-// Create a Session
   let tokenExpireDate =new Date();
   tokenExpireDate.setDate(tokenExpireDate.getDate() + 1);
   const session = {
@@ -105,7 +90,6 @@ exports.login = async (req, res) => {
     expireDate: tokenExpireDate
   };
 
-  // Save Session in the database
   Session.create(session)
     .then(data => {
       let userInfo = {
