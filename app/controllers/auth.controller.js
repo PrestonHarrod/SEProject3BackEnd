@@ -18,13 +18,13 @@ exports.login = (req, res) => {
 
     //Google code 
     const {OAuth2Client} = require('google-auth-library');
-    const client = new OAuth2Client('344429607870-mmsdb296ne3vcb7popn96mclv3jnhigv.apps.googleusercontent.com');
+    const client = new OAuth2Client('xxxxxxxxxxxxx.apps.googleusercontent.com');
     const ticket = await client.verifyIdToken({
-      idToken: req.body.accessToken,
-      audience: '344429607870-mmsdb296ne3vcb7popn96mclv3jnhigv.apps.googleusercontent.com'
+      idToken: inputs.accessToken,
+      audience: 'xxxxx.apps.googleusercontent.com'
     });
     const payload= ticket.getPayload();
-    console.log('payload: '+JSON.stringify(payload));
+    console.log('Google payload is '+JSON.stringify(payload));
     const userid = payload['sub'];
     let email = payload['email'];
     let emailVerified = payload['email_verified'];
