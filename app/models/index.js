@@ -60,14 +60,4 @@ db.semesters.belongsToMany(db.courses, {
   foreignKey: "courseID"
 });
 
-//how do you do has one?
-
-
-
-
-
-
-
-
-
 module.exports = db;

@@ -3,7 +3,6 @@ const Session = db.sessions;
 const Advisor = db.advisors;
 const Student = db.students;
 const Op = db.Sequelize.Op;
-const authcofig = require('../config/auth.config.js');
 
 const { advisor } = require("../models");
 exports.login = async (req, res) => {
@@ -36,7 +35,6 @@ exports.login = async (req, res) => {
   .then(data => {
     if (data != null) {
       let advisor= data.dataValues;
-      token = jwt.sign({ id: advisor.email }, authcofig.secret, {expiresIn: 86400}); // 24 hours
       user.email = advisor.email;
       user.advisorID = advisor.id;
       user.studentID = null;
@@ -58,7 +56,6 @@ exports.login = async (req, res) => {
       .then(data => {
         if (data != null) {         
             let student = data.dataValues;
-            token = jwt.sign({ id: student.email }, authcofig.secret, {expiresIn: 86400}); // 24 hours
             user.email = student.email;
             user.advisorID = null;
             user.studentID = student.id;
