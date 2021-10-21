@@ -9,6 +9,8 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true, 
         unique: true,
         allowNull: false,
+        autoIncrement: true,
+
       },
       startDate:{
         type: DataTypes.DATE

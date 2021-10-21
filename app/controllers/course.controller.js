@@ -1,4 +1,4 @@
-const { response } = require("express");
+//const { response } = require("express");
 const db = require("../models");
 const Course = db.courses;
 const Op = db.Sequelize.Op;
@@ -10,6 +10,7 @@ exports.create = (req, res) => {
   
     // Create a Course
     const course = {
+      courseID: req.body.courseID,
       semesterID: req.body.semesterID,
       name: req.body.name,
       dept: req.body.dept,
@@ -17,7 +18,8 @@ exports.create = (req, res) => {
       desc: req.body.desc,
       hours: req.body.hours,
       level: req.body.level,
-      updatedAt: db.Sequelize.NOW,
+      //createdAt: db.Sequelize.NOW,
+      //updatedAt: db.Sequelize.NOW,
     
     };
   
@@ -36,14 +38,12 @@ exports.create = (req, res) => {
 
 // Retrieve all Courses from the database.
 exports.findAll = (req, res) => {
-
-    const id = req.query.id;
-    //var condition = courseID ? { courseID: { [Op.like]: `%${courseID}%` } } : null;
-
+    const id = req.params.id;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Course.findAll({ where: condition })
       .then(data => {
-        res.send(data)
+        res.send(data);
       })
       .catch(err => {
         res.status(500).send({
@@ -56,8 +56,7 @@ exports.findAll = (req, res) => {
 
 // Find a single Course with an id
 exports.findOne = (req, res) => {
-  const id = req.query.id;
-
+    const id = req.params.id;
 
   Course.findByPk(id)
     .then(data => {
@@ -73,11 +72,11 @@ exports.findOne = (req, res) => {
 
 // Update a Course by the id in the request
 exports.update = (req, res) => {
-  const id = req.query.id;
+    const id = req.params.id;
+   
   
-    Course.update(req.body, {
-      where: { id: id }
-
+    Course.update(req.body, { updatedAt: db.Sequelize.NOW,
+      where: { courseID: id }
     })
       .then(num => {
         if (num == 1) {
@@ -99,11 +98,11 @@ exports.update = (req, res) => {
 
 // Delete a Course with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.query.id;
-
+    const id = req.params.id;
+    console.log(id);
   
     Course.destroy({
-      where: { id: id }
+      where: { courseID: id }
     })
       .then(num => {
         if (num == 1) {
@@ -112,13 +111,13 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete Course with id=${courseID}. Maybe Course was not found!`
+            message: `Cannot delete Course with id=${id}. Maybe Course was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Course with id=" + courseID
+          message: "Could not delete Course with id=" + id
         });
       });
   };

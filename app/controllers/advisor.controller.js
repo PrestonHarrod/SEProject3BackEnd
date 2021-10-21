@@ -6,7 +6,7 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   console.log("create advisor start");
     // Validate request
-    if (!req.body.advisorID) {
+    if (!req.body.dept) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -19,7 +19,9 @@ exports.create = (req, res) => {
       fName: req.body.fName,
       lName: req.body.lName,
       email: req.body.email,
-      dept: req.body.dept
+      dept: req.body.dept,
+      createdAt: db.Sequelize.NOW,
+      updatedAt: db.Sequelize.NOW
     
    
     };
@@ -40,8 +42,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Advisors from the database.
 exports.findAll = (req, res) => {
-    const advisorID = req.query.advisorID;
-    var condition = advisorID ? { advisorID: { [Op.like]: `%${advisorID}%` } } : null;
+    const id = req.params.id;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Advisor.findAll({ where: condition })
       .then(data => {
@@ -58,11 +60,12 @@ exports.findAll = (req, res) => {
 
 // Find a single Advisor with an id
 exports.findOne = (req, res) => {
-  const id = req.query.id;
+    const id = req.params.id;
 
-  Advisor.findByPk(id, include ["advisor"])
-    .then((advisor) => {
-      return advisor;
+  Advisor.findByPk(id /*, include ["advisor"]*/)
+    .then((data) => {
+      res.send(data);
+      console.log(data);
     })
     .catch(err => {
       res.status(500).send({
@@ -76,10 +79,10 @@ exports.findOne = (req, res) => {
 
 // Update a Advisor by the id in the request
 exports.update = (req, res) => {
-  const id = req.query.id;
+    const id = req.params.id;
   
-    Advisor.update(req.body, {
-      where: { id: id }
+    Advisor.update(req.body, { updatedAt: db.Sequelize.NOW,
+      where: { advisorID: id }
     })
       .then(num => {
         if (num == 1) {
@@ -101,10 +104,10 @@ exports.update = (req, res) => {
 
 // Delete a Advisor with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.query.id;
+    const id = req.params.id;
   
     Advisor.destroy({
-      where: { id: id }
+      where: { advisorID: id }
     })
       .then(num => {
         if (num == 1) {
@@ -154,4 +157,3 @@ exports.findAllPublished = (req, res) => {
         });
       });
   };
-
