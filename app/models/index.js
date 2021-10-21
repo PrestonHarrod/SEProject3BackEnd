@@ -27,6 +27,7 @@ db.degreeCourses = require("./degreeCourse.model.js")(sequelize, Sequelize);
 db.semesters = require("./semester.model.js")(sequelize, Sequelize);
 db.students = require("./student.model.js")(sequelize, Sequelize);
 db.studentCourses = require("./studentCourse.model.js")(sequelize, Sequelize);
+db.sessions = require('./session.model.js')(sequelize, Sequelize);
 //add has associations here
 
 db.advisors.hasMany(db.students, {as: "students"});
