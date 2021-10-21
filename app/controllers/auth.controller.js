@@ -15,6 +15,7 @@ exports.login = async (req, res) => {
     return;
   }
 
+  // code from word doc to authenticate token from frontend
   const {OAuth2Client} = require('google-auth-library');
   const client = new OAuth2Client('738583612295-7lvrgo65m2qnpq05eg20turnoamher1l.apps.googleusercontent.com');
   const ticket = await client.verifyIdToken({
@@ -26,42 +27,40 @@ exports.login = async (req, res) => {
   let email = payload['email'];
 
   let user = {};
-  let token = null;
 
-  let  foundUser = false;
-  await Advisor.findOne({
-    where : {email:email}
-  })
-  .then(data => {
-    if (data != null) {
-      let advisor= data.dataValues;
-      user.email = advisor.email;
-      user.advisorID = advisor.id;
-      user.studentID = null;
-      user.userID = advisor.id;
-      user.fName = advisor.fName;
-      foundUser = true;
+  // Look for an advior in the database
+  let userFound = false;
+  await Advisor.findOne({ where : {email:email}})
+    .then(data => {
+        if (data != null) {
+        let advisor= data.dataValues;
+        user.email = advisor.email;
+        user.advisorID = advisor.advisorID;
+        user.studentID = null;
+        user.userID = advisor.advisorID;
+        user.fName = advisor.fName;
+        userFound = true;
 
-    }
+        }
     }).catch(err => {
         res.status(401).send({
           message: err.message || "Error looking up User"
         });
         return;
     });
-      await Student.findOne({
-        where : {email:email}
-      }
-      )
+
+    // Look for a student in the database
+      await Student.findOne({where : {email:email}
+      })
       .then(data => {
         if (data != null) {         
             let student = data.dataValues;
             user.email = student.email;
-            user.advisorID = null;
-            user.studentID = student.id;
-            user.userID  = student.id;
+            user.advisorID = student.advisorID;
+            user.studentID = student.studentID;
+            user.userID  = student.studentID;
             user.fName = student.fName;
-            foundUser = true;
+            userFound = true;
          }
 
       }).catch(err => {
@@ -71,7 +70,7 @@ exports.login = async (req, res) => {
         return;
     });
     console.log()
-    if (!foundUser) {
+    if (!userFound) {
       res.status(401).send({
         message: "User Not Found"
       });
@@ -80,7 +79,7 @@ exports.login = async (req, res) => {
   let tokenExpireDate =new Date();
   tokenExpireDate.setDate(tokenExpireDate.getDate() + 1);
   const session = {
-    token: token,
+    token: req.body.accessToken,
     email: user.email,
     advisorId : user.advisorID,
     studentId : user.studentID,
