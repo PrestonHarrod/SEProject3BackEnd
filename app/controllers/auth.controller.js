@@ -104,7 +104,7 @@ exports.login = (req, res) => {
           token : session.token
         };
   
-        res.send(userInfo);
+        res.send(userData);
       })
       .catch(err => {
         res.status(500).send({
