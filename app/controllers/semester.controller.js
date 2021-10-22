@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Semester
 exports.create = (req, res) => {
     // Validate request
-  
+
   
     // Create a Semester
     const semester = {
@@ -33,7 +33,9 @@ exports.create = (req, res) => {
 
 // Retrieve all Semesters from the database.
 exports.findAll = (req, res) => {
+
     const id = req.params.id;
+
     var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Semester.findAll({ where: condition })
@@ -51,7 +53,9 @@ exports.findAll = (req, res) => {
 
 // Find a single Semester with an id
 exports.findOne = (req, res) => {
+
     const id = req.params.id;
+
 
   Semester.findByPk(id)
     .then(data => {
@@ -67,7 +71,9 @@ exports.findOne = (req, res) => {
 
 // Update a Semester by the id in the request
 exports.update = (req, res) => {
+
     const id = req.params.id;
+
   
     Semester.update(req.body, { updatedAt: db.Sequelize.NOW,
       where: { semesterID: id }

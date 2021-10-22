@@ -10,7 +10,9 @@ exports.create = (req, res) => {
   
     // Create a Course
     const course = {
+
       courseID: req.body.courseID,
+
       semesterID: req.body.semesterID,
       name: req.body.name,
       dept: req.body.dept,
@@ -73,10 +75,12 @@ exports.findOne = (req, res) => {
 // Update a Course by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
+
    
   
     Course.update(req.body, { updatedAt: db.Sequelize.NOW,
       where: { courseID: id }
+
     })
       .then(num => {
         if (num == 1) {

@@ -5,7 +5,9 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Student
 exports.create = (req, res) => {
     // Validate request
+
     if (!req.body.fName) {
+
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -46,7 +48,9 @@ exports.create = (req, res) => {
 
 // Retrieve all Students from the database.
 exports.findAll = (req, res) => {
+
     const id = req.params.id;
+
     var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Student.findAll({ where: condition })
@@ -64,10 +68,12 @@ exports.findAll = (req, res) => {
 
 // Find a single Student with an id
 exports.findOne = (req, res) => {
+
   console.log("getting here")
     const id = req.params.id;
     console.log(id);
   Student.findByPk(id /*,{include: ["degree", "advisor"]}*/) //this will return the degrees and advisors for that given student
+
     .then(data => {
       res.send(data);
       console.log(data);
@@ -107,7 +113,9 @@ exports.update = (req, res) => {
 
 // Delete a Student with the specified id in the request
 exports.delete = (req, res) => {
+
     const id = req.params.id;
+
   
     Student.destroy({
       where: { studentID: id }
