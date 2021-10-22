@@ -18,8 +18,8 @@ exports.create = (req, res) => {
       desc: req.body.desc,
       hours: req.body.hours,
       level: req.body.level,
-      //createdAt: db.Sequelize.NOW,
-      //updatedAt: db.Sequelize.NOW,
+      createdAt: db.Sequelize.NOW,
+      updatedAt: db.Sequelize.NOW,
     
     };
   

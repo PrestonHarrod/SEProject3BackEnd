@@ -13,8 +13,8 @@ exports.create = (req, res) => {
       startDate: req.body.startDate,
       endDate: req.body.endDate,
       season: req.body.season,
-      // createAt: db.Sequelize.NOW,
-      // updatedAt: db.Sequelize.NOW
+      createdAt: db.Sequelize.NOW,
+      updatedAt: db.Sequelize.NOW
    
     };
   

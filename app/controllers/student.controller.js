@@ -22,7 +22,7 @@ exports.create = (req, res) => {
       major: req.body.major,
       grad_date: req.body.grad_date,
       email: req.body.email,
-      createAt: db.Sequelize.NOW,
+      createdAt: db.Sequelize.NOW,
       updatedAt: db.Sequelize.NOW
 
    
@@ -35,6 +35,8 @@ exports.create = (req, res) => {
         res.send(data);
       })
       .catch(err => {
+        console.log(err)
+
         res.status(500).send({
           message:
             err.message || "Some error occurred while creating the Student."
