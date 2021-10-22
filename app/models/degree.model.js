@@ -8,7 +8,9 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.INTEGER,
         primaryKey: true, 
         unique: true,
-        allowNull: false
+        allowNull: false,
+        autoIncrement: true,
+
       },
       dept: {
         type: Sequelize.STRING

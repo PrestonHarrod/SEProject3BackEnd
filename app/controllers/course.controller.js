@@ -1,4 +1,4 @@
-const { response } = require("express");
+//const { response } = require("express");
 const db = require("../models");
 const Course = db.courses;
 const Op = db.Sequelize.Op;
@@ -10,7 +10,9 @@ exports.create = (req, res) => {
   
     // Create a Course
     const course = {
-      courseID: req.params.courseID,
+
+      courseID: req.body.courseID,
+
       semesterID: req.body.semesterID,
       name: req.body.name,
       dept: req.body.dept,
@@ -18,6 +20,7 @@ exports.create = (req, res) => {
       desc: req.body.desc,
       hours: req.body.hours,
       level: req.body.level,
+      createdAt: db.Sequelize.NOW,
       updatedAt: db.Sequelize.NOW,
     
     };
@@ -42,7 +45,7 @@ exports.findAll = (req, res) => {
   
     Course.findAll({ where: condition })
       .then(data => {
-        res.send(data)
+        res.send(data);
       })
       .catch(err => {
         res.status(500).send({
@@ -72,10 +75,12 @@ exports.findOne = (req, res) => {
 // Update a Course by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
-    console.log("id=" + id);
+
+   
   
     Course.update(req.body, { updatedAt: db.Sequelize.NOW,
-      where: { id: id }
+      where: { courseID: id }
+
     })
       .then(num => {
         if (num == 1) {
@@ -101,7 +106,7 @@ exports.delete = (req, res) => {
     console.log(id);
   
     Course.destroy({
-      where: { id: id }
+      where: { courseID: id }
     })
       .then(num => {
         if (num == 1) {

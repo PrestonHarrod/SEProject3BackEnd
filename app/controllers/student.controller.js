@@ -5,7 +5,9 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Student
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.id) {
+
+    if (!req.body.fName) {
+
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -21,16 +23,22 @@ exports.create = (req, res) => {
       lName: req.body.lName,
       major: req.body.major,
       grad_date: req.body.grad_date,
-      email: req.body.email
+      email: req.body.email,
+      createdAt: db.Sequelize.NOW,
+      updatedAt: db.Sequelize.NOW
+
    
     };
   
     // Save Student in the database
     Student.create(student)
       .then(data => {
+        console.log(data)
         res.send(data);
       })
       .catch(err => {
+        console.log(err)
+
         res.status(500).send({
           message:
             err.message || "Some error occurred while creating the Student."
@@ -40,7 +48,9 @@ exports.create = (req, res) => {
 
 // Retrieve all Students from the database.
 exports.findAll = (req, res) => {
-    const id = req.query.id;
+
+    const id = req.params.id;
+
     var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Student.findAll({ where: condition })
@@ -58,11 +68,15 @@ exports.findAll = (req, res) => {
 
 // Find a single Student with an id
 exports.findOne = (req, res) => {
-    const id = req.query.id;
 
-  Student.findByPk(id, {include: ["degree", "advisor"]}) //this will return the degrees and advisors for that given student
+  console.log("getting here")
+    const id = req.params.id;
+    console.log(id);
+  Student.findByPk(id /*,{include: ["degree", "advisor"]}*/) //this will return the degrees and advisors for that given student
+
     .then(data => {
       res.send(data);
+      console.log(data);
     })
     .catch(err => {
       res.status(500).send({
@@ -74,10 +88,10 @@ exports.findOne = (req, res) => {
 
 // Update a Student by the id in the request
 exports.update = (req, res) => {
-    const id = req.query.id;
+    const id = req.params.id;
   
-    Student.update(req.body, {
-      where: { id: id }
+    Student.update(req.body, { updatedAt: db.Sequelize.NOW,
+      where: { studentID: id }
     })
       .then(num => {
         if (num == 1) {
@@ -99,10 +113,12 @@ exports.update = (req, res) => {
 
 // Delete a Student with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.query.id;
+
+    const id = req.params.id;
+
   
     Student.destroy({
-      where: { id: id }
+      where: { studentID: id }
     })
       .then(num => {
         if (num == 1) {
