@@ -24,8 +24,8 @@ exports.create = (req, res) => {
       major: req.body.major,
       grad_date: req.body.grad_date,
       email: req.body.email,
-      createdAt: db.Sequelize.NOW,
-      updatedAt: db.Sequelize.NOW
+      // createdAt: db.Sequelize.NOW,
+      // updatedAt: db.Sequelize.NOW
 
    
     };
