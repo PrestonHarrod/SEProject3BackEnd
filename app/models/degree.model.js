@@ -10,7 +10,6 @@ module.exports = (sequelize, Sequelize) => {
         unique: true,
         allowNull: false,
         autoIncrement: true,
-
       },
       dept: {
         type: Sequelize.STRING
