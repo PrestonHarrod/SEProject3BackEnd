@@ -14,10 +14,10 @@ module.exports = (sequelize, Sequelize) => {
 
       },
       startDate:{
-        type: DataTypes.DATE
+        type: DataTypes.DATEONLY
       },
       endDate:{
-        type: DataTypes.DATE
+        type: DataTypes.DATEONLY
       },
       season:{
         type: DataTypes.STRING
