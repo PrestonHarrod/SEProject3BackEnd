@@ -19,9 +19,13 @@ module.exports = (sequelize, Sequelize) => {
       },
       dept:{
         type: DataTypes.STRING
+      },
+      role:{
+        type: DataTypes.STRING
       }
 
       },
+      
       {
         tableName: 'advisors'
       

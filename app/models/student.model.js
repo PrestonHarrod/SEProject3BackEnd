@@ -33,6 +33,9 @@ module.exports = (sequelize, Sequelize) => {
       email: {
         type: Sequelize.STRING
       },
+      role:{
+        type: DataTypes.STRING
+      }
     },
     {
       tableName: 'students'
