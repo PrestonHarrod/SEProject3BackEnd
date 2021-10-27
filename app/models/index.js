@@ -29,6 +29,23 @@ db.students = require("./student.model.js")(sequelize, Sequelize);
 db.studentCourses = require("./studentCourse.model.js")(sequelize, Sequelize);
 db.sessions = require('./session.model.js')(sequelize, Sequelize);
 //add has associations here
+db.courses.hasMany(db.studentCourses, {
+  as: 'studentcourse'
+});
+
+db.studentCourses.belongsTo(db.courses, {
+  foreignKey: 'courseID'
+})
+
+db.students.hasMany(db.studentCourses, {
+  as: 'studentcourse'
+});
+db.semesters.hasMany(db.studentCourses, {
+  as: 'studentcourse'
+});
+db.studentCourses.belongsTo(db.semesters, {
+  foreignKey: 'semesterID'
+});
 
 db.advisors.hasMany(db.students, {as: "students"});
 db.students.belongsTo(db.advisors, {

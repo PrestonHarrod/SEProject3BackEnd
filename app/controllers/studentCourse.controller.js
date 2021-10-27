@@ -38,7 +38,7 @@ exports.findAll = (req, res) => {
     const id = req.query.id;
     var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
-    StudentCourses.findAll({ where: condition })
+    StudentCourses.findAll({include: ["semester", "course"]},{ where: condition })
       .then(data => {
         res.send(data);
       })
