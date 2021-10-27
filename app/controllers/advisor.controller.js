@@ -68,7 +68,7 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
 
 
-  Advisor.findByPk(id /*, include ["advisor"]*/)
+  Advisor.findByPk(id /*, {include: ["advisor"]}*/)
     .then((data) => {
       res.send(data);
       console.log(data);

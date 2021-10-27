@@ -55,7 +55,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.query.id;
 
-  Degree.findByPk(id)
+  Degree.findByPk(id, {include: ["course"]})
     .then(data => {
       res.send(data);
     })
