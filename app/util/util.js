@@ -61,14 +61,104 @@ authenticate = (req, res, next) => {
 }
 
 
-
+//same as authenticate but the .then => data is different. make sure the advisor.role is advisor
 isAdmin = (req, res, next) => {
+  let authheader = req.get("authorization");
+  if (authheader!=null) //we need to make sure that the authheader is not null
+  {
+    if (authheader.startsWith("Bearer ")){ //dont accept a header that 
+      let token = authHeader.substring(7, authHeader.length);
+      jwt.verify(token, config.secret), (err, decoded) => { //verify the token
+        if (err){
+          return res.json({
+            success:false,
+            message: 'token is not valid'
+          })
+        }
+      }
+      //find the session with the same token, sessions are created in the auth controller when one is logged in
+      Session.findOne({
+        where : {token:token}
+      })
+      .then(data=> {
+        //check to see if session has the admin
+        let session = data.dataValues;
+        if (session!= null)
+        {
+          //find the adminID in the session
+          if(session.adminID != null){
+            Admin.findByPk(session.adminID)
+            .then(data => {
+              if(data.dataValues.role = "Admin")
+              {
+                next();
+                return;
+              }
+              else {
+                //error
+              }
 
-};
+            })
+          }
+        }
+       })
+      
+    }
+    else{
+      //Error
+    }
+
+  }
+}
 
 isAdvisor = (req, res, next) => {
+  let authheader = req.get("authorization");
+  if (authheader!=null) //we need to make sure that the authheader is not null
+  {
+    if (authheader.startsWith("Bearer ")){ //dont accept a header that 
+      let token = authHeader.substring(7, authHeader.length);
+      jwt.verify(token, config.secret), (err, decoded) => { //verify the token
+        if (err){
+          return res.json({
+            success:false,
+            message: 'token is not valid'
+          })
+        }
+      }
+      //find the session with the same token, sessions are created in the auth controller when one is logged in
+      Session.findOne({
+        where : {token:token}
+      })
+      .then(data=> {
+        //check to see if session has the admin
+        let session = data.dataValues;
+        if (session!= null)
+        {
+          //find the advisorID in the session
+          if(session.advisorID != null){
+            Admin.findByPk(session.advisorID)
+            .then(data => {
+              if(data.dataValues.role = "Advisor")
+              {
+                next();
+                return;
+              }
+              else {
+                //error
+              }
 
-  };
+            })
+          }
+        }
+       })
+      
+    }
+    else{
+      //Error
+    }
+
+  }
+}
 
 
 
@@ -76,22 +166,16 @@ isAdvisor = (req, res, next) => {
 
 
 //checks to see if they are an advisor or an admin, how do I include each?
-isAdminOrAdvisor = (req, res, next) => {
 
-};
 
 
 //how do I check for any role?
-isAny = (req, res, next) => {
 
-  
-};
 
 const authJwt = {
   authenticate: authenticate,
   isAdmin: isAdmin,
   isAdvisor: this.isAdvisor,
-  isStudent: isStudent,
   isAdminOrAdvisor: isAdminOrAdvisor,
   isAny: isAny
   
