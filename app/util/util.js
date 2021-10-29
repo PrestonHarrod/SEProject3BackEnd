@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
-const { sessions } = require("../models");
 const db = require("../models");
 const Admin = db.admins;
 const Advisor = db.advisors;
@@ -111,7 +110,7 @@ isAdmin = (req, res, next) => {
   }
 }
 
-isAdvisorOrAdmin = (req, res, next) => {
+isAdminOrAdvisor = (req, res, next) => {
   let authheader = req.get("authorization");
   if (authheader!=null) //we need to make sure that the authheader is not null
   {
@@ -134,21 +133,8 @@ isAdvisorOrAdmin = (req, res, next) => {
         let session = data.dataValues;
         if (session!= null)
         {
-          //find the advisorID in the session
-          if(session.advisorID != null){
-            Advisor.findByPk(session.advisorID)
-            .then(data => {
-              if(data.dataValues.role = "Advisor")
-              {
-                next();
-                return;
-              }
-              //no else statement here because it is ok if null
-
-
-            })
-          }
-          else if(session.advisorID != null){
+          //find the adminID in the session
+          if(session.adminID != null){
             Admin.findByPk(session.adminID)
             .then(data => {
               if(data.dataValues.role = "Admin")
@@ -156,24 +142,39 @@ isAdvisorOrAdmin = (req, res, next) => {
                 next();
                 return;
               }
+              else {
+                //error
+              }
 
             })
           }
-        else{
-            //error does not have role
+          else if(session.advisorID != null){
+            Advisor.findByPk(session.advisorID)
+            .then(data => {
+              if(data.dataValues.role = "Advisor")
+              {
+                next();
+                return;
+              }
+              else {
+                //error
+              }
 
+            })
+          }
         }
-       
+       })
       
     }
     else{
       //Error
     }
-  }
 
+  }
 }
 
 
+  
 
 isAny = (req, res, next) => {
   let authheader = req.get("authorization");
@@ -198,21 +199,8 @@ isAny = (req, res, next) => {
         let session = data.dataValues;
         if (session!= null)
         {
-          //find the advisorID in the session
-          if(session.advisorID != null){
-            Advisor.findByPk(session.advisorID)
-            .then(data => {
-              if(data.dataValues.role = "Advisor")
-              {
-                next();
-                return;
-              }
-              //no else statement here because it is ok if null
-
-
-            })
-          }
-          else if(session.adminID != null){
+          //find the adminID in the session
+          if(session.adminID != null){
             Admin.findByPk(session.adminID)
             .then(data => {
               if(data.dataValues.role = "Admin")
@@ -220,28 +208,52 @@ isAny = (req, res, next) => {
                 next();
                 return;
               }
+              else {
+                //error
+              }
 
             })
-        }
-        else if (session.studentID != null){
-          Admin.findByPk(session.adminID)
-          .then(data => {
-            if(data.dataValues.role = "Admin")
-            {
-              next();
-              return;
-            }
+          }
+          else if(session.advisorID != null){
+            Advisor.findByPk(session.advisorID)
+            .then(data => {
+              if(data.dataValues.role = "Advisor")
+              {
+                next();
+                return;
+              }
+              else {
+                //error
+              }
 
-          })
-      }
-       
+            })
+          }
+          else if (session.studentID != null)
+          {
+            Student.findByPk(session.studentID)
+            .then(data => {
+              if(data.dataValues.role = "Student")
+              {
+                next();
+                return;
+              }
+              else {
+                //error
+              }
+
+            })
+          }
+        }
+       })
       
     }
     else{
       //Error
     }
 
+  }
 }
+
 
 
 //having curlybrace errors
