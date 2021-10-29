@@ -35,20 +35,24 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const id = req.query.id;
-    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
-  
-    DegreeCourses.findAll({include: ["degree","course"]},{ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Degrees."
-        });
+  const degreeID = req.query.degreeID;
+  var condition = degreeID ? {
+    degreeID: {
+      [Op.like]: `%${degreeID}%`
+    }
+  } : null;
+
+  DegreeCourses.findAll({include: ["degree", "course"], where: condition})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Degrees."
       });
-  };
+    });
+};
 
 
 // Find a single Degree with an id

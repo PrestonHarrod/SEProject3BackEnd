@@ -35,10 +35,14 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const id = req.query.id;
-    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
+    const studentID = req.query.studentID;
+    var condition = studentID ? {
+      studentID: {
+        [Op.like]: `%${studentID}%`
+      }
+    } : null;
   
-    StudentCourses.findAll({include: ["semester", "course"]},{ where: condition })
+    StudentCourses.findAll({include: ["semester", "course"], where: condition})
       .then(data => {
         res.send(data);
       })

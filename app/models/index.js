@@ -77,4 +77,24 @@ db.semesters.belongsToMany(db.courses, {
   foreignKey: "courseID"
 });
 
+db.courses.hasMany(db.degreeCourses, {
+  as: 'degreecourse'
+});
+db.degreeCourses.belongsTo(db.courses, {
+  foreignKey: 'courseID'
+});
+db.degrees.hasMany(db.degreeCourses, {
+  as: 'degreecourse'
+});
+db.degreeCourses.belongsTo(db.degrees, {
+  foreignKey: 'degreeID'
+});
+
+db.degrees.hasMany(db.students, {
+  as: 'student'
+});
+db.students.belongsTo(db.degrees, {
+  foreignKey: 'degreeID'
+});
+
 module.exports = db;
