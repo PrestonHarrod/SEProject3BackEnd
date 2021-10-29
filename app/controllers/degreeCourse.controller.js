@@ -35,27 +35,31 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const id = req.query.id;
-    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
-  
-    Degree.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Degrees."
-        });
+  const degreeID = req.query.degreeID;
+  var condition = degreeID ? {
+    degreeID: {
+      [Op.like]: `%${degreeID}%`
+    }
+  } : null;
+
+  DegreeCourses.findAll({include: ["degree", "course"], where: condition})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Degrees."
       });
-  };
+    });
+};
 
 
 // Find a single Degree with an id
 exports.findOne = (req, res) => {
     const id = req.query.id;
 
-  Degree.findByPk(id)
+    DegreeCourses.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -71,7 +75,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.query.id;
   
-    Degree.update(req.body, {
+    DegreeCourses.update(req.body, {
       where: { id: id }
     })
       .then(num => {
@@ -96,7 +100,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.query.id;
   
-    Degree.destroy({
+    DegreeCourses.destroy({
       where: { id: id }
     })
       .then(num => {
@@ -119,7 +123,7 @@ exports.delete = (req, res) => {
 
 // Delete all degrees from the database.
 exports.deleteAll = (req, res) => {
-    Degree.destroy({
+  DegreeCourses.destroy({
       where: {},
       truncate: false
     })
@@ -136,7 +140,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published degrees
 exports.findAllPublished = (req, res) => {
-    Degree.findAll({ where: { published: true } })
+  DegreeCourses.findAll({ where: { published: true } })
       .then(data => {
         res.send(data);
       })

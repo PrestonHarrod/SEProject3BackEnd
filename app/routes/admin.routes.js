@@ -1,5 +1,6 @@
 module.exports = app => {
     const admins = require("../controllers/admin.controller.js");
+    const auth = require("../util.js");
   
     var router = require("express").Router();
   
@@ -7,22 +8,19 @@ module.exports = app => {
     router.post("/", admins.create);
   
     // Retrieve all admins
-    router.get("/", admins.findAll);
-  
-    // Retrieve all published admins
-    router.get("/published", admins.findAllPublished);
+    router.get("/", [auth.authenticate, auth.isAdmin], admins.findAll);
   
     // Retrieve a single Tutorial with id
-    router.get("/:id", admins.findOne);
+    router.get("/:id", [auth.authenticate, auth.isAdmin], admins.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id", admins.update);
+    router.put("/:id", [auth.authenticate, auth.isAdmin], admins.update);
   
     // Delete a Tutorial with id
-    router.delete("/:id", admins.delete);
+    router.delete("/:id", [auth.authenticate, auth.isAdmin], admins.delete);
   
     // Delete all admins
-    router.delete("/", admins.deleteAll);
+    router.delete("/", [auth.authenticate, auth.isAdmin], admins.deleteAll);
   
     app.use('/api/admins', router);
   };

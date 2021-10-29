@@ -32,6 +32,23 @@ db.sessions = require('./session.model.js')(sequelize, Sequelize);
 
 db.roles = ["admin", "advisor", "student"]; //our roles
 //add has associations here
+db.courses.hasMany(db.studentCourses, {
+  as: 'studentcourse'
+});
+
+db.studentCourses.belongsTo(db.courses, {
+  foreignKey: 'courseID'
+})
+
+db.students.hasMany(db.studentCourses, {
+  as: 'studentcourse'
+});
+db.semesters.hasMany(db.studentCourses, {
+  as: 'studentcourse'
+});
+db.studentCourses.belongsTo(db.semesters, {
+  foreignKey: 'semesterID'
+});
 
 db.advisors.hasMany(db.students, {as: "students"});
 db.students.belongsTo(db.advisors, {
@@ -63,6 +80,27 @@ db.semesters.belongsToMany(db.courses, {
   foreignKey: "courseID"
 });
 
+db.courses.hasMany(db.degreeCourses, {
+  as: 'degreecourse'
+});
+db.degreeCourses.belongsTo(db.courses, {
+  foreignKey: 'courseID'
+});
+db.degrees.hasMany(db.degreeCourses, {
+  as: 'degreecourse'
+});
+db.degreeCourses.belongsTo(db.degrees, {
+  foreignKey: 'degreeID'
+});
+
+db.degrees.hasMany(db.students, {
+  as: 'student'
+});
+db.students.belongsTo(db.degrees, {
+  foreignKey: 'degreeID'
+});
+
 module.exports = db, {
   authJwt
 };
+

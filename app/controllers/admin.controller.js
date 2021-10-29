@@ -21,7 +21,7 @@ exports.create = (req, res) => {
       lName: req.body.lName,
       email: req.body.email,
       dept: req.body.dept,
-      role: "admin"
+      role: "Admin"
     
    
     };

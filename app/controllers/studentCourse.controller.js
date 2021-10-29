@@ -35,10 +35,14 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const id = req.query.id;
-    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
+    const studentID = req.query.studentID;
+    var condition = studentID ? {
+      studentID: {
+        [Op.like]: `%${studentID}%`
+      }
+    } : null;
   
-    Degree.findAll({ where: condition })
+    StudentCourses.findAll({include: ["semester", "course"], where: condition})
       .then(data => {
         res.send(data);
       })
@@ -55,7 +59,8 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.query.id;
 
-  Degree.findByPk(id, {include: ["course"]})
+
+    StudentCourses.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -71,7 +76,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.query.id;
   
-    Degree.update(req.body, {
+    StudentCourses.update(req.body, {
       where: { id: id }
     })
       .then(num => {
@@ -96,7 +101,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.query.id;
   
-    Degree.destroy({
+    StudentCourses.destroy({
       where: { id: id }
     })
       .then(num => {
@@ -119,7 +124,7 @@ exports.delete = (req, res) => {
 
 // Delete all degrees from the database.
 exports.deleteAll = (req, res) => {
-    Degree.destroy({
+  StudentCourses.destroy({
       where: {},
       truncate: false
     })
@@ -136,7 +141,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published degrees
 exports.findAllPublished = (req, res) => {
-    Degree.findAll({ where: { published: true } })
+  StudentCourses.findAll({ where: { published: true } })
       .then(data => {
         res.send(data);
       })

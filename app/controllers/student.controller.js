@@ -24,7 +24,7 @@ exports.create = (req, res) => {
       major: req.body.major,
       grad_date: req.body.grad_date,
       email: req.body.email,
-      role: "student"
+      role: "Student"
 
    
     };

@@ -43,7 +43,6 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-
     const id = req.params.id;
     var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
     
