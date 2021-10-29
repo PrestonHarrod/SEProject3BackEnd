@@ -8,7 +8,7 @@ module.exports = app => {
     router.post("/", [auth.authenticate, auth.isAdminOrAdvisor], studentCourses.create);
   
     // Retrieve all studentCourses
-    router.get("/", [auth.authenticate, auth.isAdminOrAdvisor], studentCourses.findAll);
+    router.get("/", [auth.authenticate, auth.isAny], studentCourses.findAll);
   
     // Retrieve a single Tutorial with id
     router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], studentCourses.findOne);
