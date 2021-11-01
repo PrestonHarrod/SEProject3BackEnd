@@ -262,7 +262,7 @@ isAny = (req, res, next) => {
 const authJwt = {
   authenticate: authenticate,
   isAdmin: isAdmin,
-  isAdvisorOrAdmin: isAdvisorOrAdmin,
+  isAdminOrAdvisor: isAdminOrAdvisor,
   isAny: isAny
   
 };
