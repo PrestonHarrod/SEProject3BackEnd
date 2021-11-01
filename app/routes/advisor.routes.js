@@ -4,19 +4,19 @@ module.exports = app => {
 
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    // Create a new Advisor
     router.post("/", [auth.authenticate, auth.isAdmin], advisors.create);
   
     // Retrieve all advisors
     router.get("/", [auth.authenticate, auth.isAny], advisors.findAll);
   
-    // Retrieve a single Tutorial with id
-    router.get("/:id", [auth.authenticate, auth.isAdmin], advisors.findOne);
+    // Retrieve a single Advisor with id
+    router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], advisors.findOne);
   
-    // Update a Tutorial with id
-    router.put("/:id", [auth.authenticate, auth.isAdmin], advisors.update);
+    // Update a Advisor with id
+    router.put("/:id", [auth.authenticate, auth.isAdminOrAdvisor], advisors.update);
   
-    // Delete a Tutorial with id
+    // Delete a Advisor with id
     router.delete("/:id", [auth.authenticate, auth.isAdmin], advisors.delete);
   
     // Delete all advisors
