@@ -10,18 +10,19 @@ const Session = db.sessions;
 
 authenticate = (req, res, next) => {
   let authheader = req.get("authorization");
+  console.log(db)
   if (authheader!=null) //we need to make sure that the authheader is not null
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
-      let token = authHeader.substring(7, authHeader.length);
-      jwt.verify(token, config.secret), (err, decoded) => { //verify the token
+      let token = authheader.substring(7, authheader.length);
+      jwt.verify(token, config.secret, (err, decoded) => { //verify the token
         if (err){
           return res.json({
             success:false,
             message: 'token is not valid'
           })
         }
-      }
+      });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
       Session.findOne({
         where : {token:token}
@@ -66,15 +67,15 @@ isAdmin = (req, res, next) => {
   if (authheader!=null) //we need to make sure that the authheader is not null
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
-      let token = authHeader.substring(7, authHeader.length);
-      jwt.verify(token, config.secret), (err, decoded) => { //verify the token
+      let token = authheader.substring(7, authheader.length);
+      jwt.verify(token, config.secret, (err, decoded) => { //verify the token
         if (err){
           return res.json({
             success:false,
             message: 'token is not valid'
           })
         }
-      }
+      });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
       Session.findOne({
         where : {token:token}
@@ -115,15 +116,15 @@ isAdminOrAdvisor = (req, res, next) => {
   if (authheader!=null) //we need to make sure that the authheader is not null
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
-      let token = authHeader.substring(7, authHeader.length);
-      jwt.verify(token, config.secret), (err, decoded) => { //verify the token
+      let token = authheader.substring(7, authheader.length);
+      jwt.verify(token, config.secret, (err, decoded) => { //verify the token
         if (err){
           return res.json({
             success:false,
             message: 'token is not valid'
           })
         }
-      }
+      });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
       Session.findOne({
         where : {token:token}
@@ -181,15 +182,15 @@ isAny = (req, res, next) => {
   if (authheader!=null) //we need to make sure that the authheader is not null
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
-      let token = authHeader.substring(7, authHeader.length);
-      jwt.verify(token, config.secret), (err, decoded) => { //verify the token
+      let token = authheader.substring(7, authheader.length);
+      jwt.verify(token, config.secret, (err, decoded) => { //verify the token
         if (err){
           return res.json({
             success:false,
             message: 'token is not valid'
           })
         }
-      }
+      });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
       Session.findOne({
         where : {token:token}
