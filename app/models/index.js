@@ -1,4 +1,5 @@
 const dbConfig = require("../config/db.config.js");
+const authJwt = require("./util/util.js");
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -28,6 +29,8 @@ db.semesters = require("./semester.model.js")(sequelize, Sequelize);
 db.students = require("./student.model.js")(sequelize, Sequelize);
 db.studentCourses = require("./studentCourse.model.js")(sequelize, Sequelize);
 db.sessions = require('./session.model.js')(sequelize, Sequelize);
+
+db.roles = ["admin", "advisor", "student"]; //our roles
 //add has associations here
 db.courses.hasMany(db.studentCourses, {
   as: 'studentcourse'
@@ -97,4 +100,7 @@ db.students.belongsTo(db.degrees, {
   foreignKey: 'degreeID'
 });
 
-module.exports = db;
+module.exports = db, {
+  authJwt
+};
+

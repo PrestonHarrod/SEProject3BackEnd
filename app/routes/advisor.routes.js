@@ -1,28 +1,26 @@
 module.exports = app => {
     const advisors = require("../controllers/advisor.controller.js");
-  
+    const auth = require("../util.js");
+
     var router = require("express").Router();
   
-    // Create a new Tutorial
-    router.post("/", advisors.create);
+    // Create a new Advisor
+    router.post("/", [auth.authenticate, auth.isAdmin], advisors.create);
   
     // Retrieve all advisors
-    router.get("/", advisors.findAll);
+    router.get("/", [auth.authenticate, auth.isAny], advisors.findAll);
   
-    // Retrieve all published advisors
-    router.get("/published", advisors.findAllPublished);
+    // Retrieve a single Advisor with id
+    router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], advisors.findOne);
   
-    // Retrieve a single Tutorial with id
-    router.get("/:id", advisors.findOne);
+    // Update a Advisor with id
+    router.put("/:id", [auth.authenticate, auth.isAdminOrAdvisor], advisors.update);
   
-    // Update a Tutorial with id
-    router.put("/:id", advisors.update);
-  
-    // Delete a Tutorial with id
-    router.delete("/:id", advisors.delete);
+    // Delete a Advisor with id
+    router.delete("/:id", [auth.authenticate, auth.isAdmin], advisors.delete);
   
     // Delete all advisors
-    router.delete("/", advisors.deleteAll);
+    router.delete("/", [auth.authenticate, auth.isAdmin], advisors.deleteAll);
   
     app.use('/api/advisors', router);
   };

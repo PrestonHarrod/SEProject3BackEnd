@@ -1,28 +1,27 @@
 module.exports = app => {
     const degreeCourses = require("../controllers/degreeCourse.controller.js");
+    const auth = require("../util.js");
   
     var router = require("express").Router();
   
     // Create a new Tutorial
-    router.post("/", degreeCourses.create);
+    router.post("/", [auth.authenticate, auth.isAdminOrAdvisor], degreeCourses.create);
   
     // Retrieve all degreeCourses
-    router.get("/", degreeCourses.findAll);
+    router.get("/", [auth.authenticate, auth.isAny], degreeCourses.findAll);
   
-    // Retrieve all published degreeCourses
-    router.get("/published", degreeCourses.findAllPublished);
   
     // Retrieve a single Tutorial with id
-    router.get("/:id", degreeCourses.findOne);
+    router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], degreeCourses.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id", degreeCourses.update);
+    router.put("/:id", [auth.authenticate, auth.isAdminOrAdvisor], degreeCourses.update);
   
     // Delete a Tutorial with id
-    router.delete("/:id", degreeCourses.delete);
+    router.delete("/:id", [auth.authenticate, auth.isAdminOrAdvisor], degreeCourses.delete);
   
     // Delete all degreeCourses
-    router.delete("/", degreeCourses.deleteAll);
+    router.delete("/", [auth.authenticate, auth.isAdminOrAdvisor], degreeCourses.deleteAll);
   
     app.use('/api/degreeCourses', router);
   };

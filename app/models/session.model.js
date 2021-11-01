@@ -15,6 +15,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DATE,
         allowNull: false
       },
+      adminID:{
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       advisorID: {
         type: Sequelize.STRING,
         allowNull: true

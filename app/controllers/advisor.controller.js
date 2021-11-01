@@ -22,8 +22,8 @@ exports.create = (req, res) => {
       lName: req.body.lName,
       email: req.body.email,
       dept: req.body.dept,
-      // createdAt: db.Sequelize.NOW,
-      // updatedAt: db.Sequelize.NOW
+      role: "Advisor"
+     
     
    
     };
@@ -68,7 +68,7 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
 
 
-  Advisor.findByPk(id /*, include ["advisor"]*/)
+  Advisor.findByPk(id /*, {include: ["advisor"]}*/)
     .then((data) => {
       res.send(data);
       console.log(data);

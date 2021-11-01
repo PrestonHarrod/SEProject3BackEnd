@@ -59,6 +59,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.query.id;
 
+
     StudentCourses.findByPk(id)
     .then(data => {
       res.send(data);
