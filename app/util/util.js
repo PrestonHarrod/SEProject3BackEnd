@@ -7,6 +7,7 @@ const Student = db.students;
 const Session = db.sessions;
 
 //authorization method. Authenticates 
+//comment
 
 authenticate = (req, res, next) => {
   let authheader = req.get("authorization");
