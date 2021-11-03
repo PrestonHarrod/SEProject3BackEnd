@@ -50,6 +50,7 @@ exports.login = async (req, res) => {
     });
 
     // Look for a student in the database
+    //comment
       await Student.findOne({where : {email:email}
       })
       .then(data => {
