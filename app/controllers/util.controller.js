@@ -9,6 +9,7 @@ const Op = db.Sequelize.Op;
 
 
 //authorization method. Authenticates 
+//comment
 
 authenticate = (req, res, next) => {
   let authheader = req.get("authorization");
@@ -59,7 +60,9 @@ authenticate = (req, res, next) => {
       
     }
     else{
-      //Error
+      return res.status(401).send({
+        message: "Unauthorized access error: Token"
+      })
     }
 
   }
@@ -100,7 +103,9 @@ isAdmin = (req, res, next) => {
                 return;
               }
               else {
-                //error
+                return res.status(403).send({
+                  message: "Unauthorized access: must be Admin"
+                })
               }
 
             })
@@ -110,7 +115,9 @@ isAdmin = (req, res, next) => {
       
     }
     else{
-      //Error
+      return res.status(401).send({
+        message: "Unauthorized access error: Token"
+      })
     }
 
   }
@@ -149,7 +156,9 @@ isAdminOrAdvisor = (req, res, next) => {
                 return;
               }
               else {
-                //error
+                return res.status(403).send({
+                  message: "Unauthorized access: Must be advisor or Admin"
+                })
               }
 
             })
@@ -163,7 +172,9 @@ isAdminOrAdvisor = (req, res, next) => {
                 return;
               }
               else {
-                //error
+                return res.status(403).send({
+                  message: "Unauthorized access: Must be advisor or admin"
+                })
               }
 
             })
@@ -173,7 +184,9 @@ isAdminOrAdvisor = (req, res, next) => {
       
     }
     else{
-      //Error
+      return res.status(401).send({
+        message: "Unauthorized access error: Token"
+      })
     }
 
   }
@@ -215,7 +228,9 @@ isAny = (req, res, next) => {
                 return;
               }
               else {
-                //error
+                return res.status(403).send({
+                  message: "Unauthorized access: Must have a role"
+                })
               }
 
             })
@@ -229,7 +244,9 @@ isAny = (req, res, next) => {
                 return;
               }
               else {
-                //error
+                return res.status(403).send({
+                  message: "Unauthorized access: Must have a role"
+                })
               }
 
             })
@@ -245,7 +262,9 @@ isAny = (req, res, next) => {
                 return;
               }
               else {
-                //error
+                return res.status(403).send({
+                  message: "Unauthorized access: Must have a role"
+                })
               }
 
             })
@@ -255,15 +274,14 @@ isAny = (req, res, next) => {
       
     }
     else{
-      //Error
+      return res.status(401).send({
+        message: "Unauthorized access error: Token"
+      })
     }
 
   }
 }
 
-
-
-//having curlybrace errors
 
 
 const authJwt = {
