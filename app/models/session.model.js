@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true
       },
       token: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(5000),
         allowNull: false
       },
       expireDate: {

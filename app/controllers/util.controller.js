@@ -5,12 +5,13 @@ const Admin = db.admins;
 const Advisor = db.advisors;
 const Student = db.students;
 const Session = db.sessions;
+const Op = db.Sequelize.Op;
+
 
 //authorization method. Authenticates 
 
 authenticate = (req, res, next) => {
   let authheader = req.get("authorization");
-  console.log(db)
   if (authheader!=null) //we need to make sure that the authheader is not null
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
@@ -24,9 +25,13 @@ authenticate = (req, res, next) => {
         }
       });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
-      Session.findOne({
-        where : {token:token}
-      })
+      var condition = token ? {
+        token: {
+          [Op.like]: `%${token}%`
+        }
+      } : null;
+      //console.log(condition)
+      Session.findOne({where : condition})
       .then(data=> {
         let session = data.dataValues;
         if (session != null)
@@ -68,14 +73,14 @@ isAdmin = (req, res, next) => {
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
       let token = authheader.substring(7, authheader.length);
-      jwt.verify(token, config.secret, (err, decoded) => { //verify the token
-        if (err){
-          return res.json({
-            success:false,
-            message: 'token is not valid'
-          })
-        }
-      });
+    //   jwt.verify(token, config.secret, (err, decoded) => { //verify the token
+    //     if (err){
+    //       return res.json({
+    //         success:false,
+    //         message: 'token is not valid'
+    //       })
+    //     }
+    //   });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
       Session.findOne({
         where : {token:token}
@@ -117,14 +122,14 @@ isAdminOrAdvisor = (req, res, next) => {
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
       let token = authheader.substring(7, authheader.length);
-      jwt.verify(token, config.secret, (err, decoded) => { //verify the token
-        if (err){
-          return res.json({
-            success:false,
-            message: 'token is not valid'
-          })
-        }
-      });
+    //   jwt.verify(token, config.secret, (err, decoded) => { //verify the token
+    //     if (err){
+    //       return res.json({
+    //         success:false,
+    //         message: 'token is not valid'
+    //       })
+    //     }
+    //   });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
       Session.findOne({
         where : {token:token}
@@ -183,14 +188,14 @@ isAny = (req, res, next) => {
   {
     if (authheader.startsWith("Bearer ")){ //dont accept a header that 
       let token = authheader.substring(7, authheader.length);
-      jwt.verify(token, config.secret, (err, decoded) => { //verify the token
-        if (err){
-          return res.json({
-            success:false,
-            message: 'token is not valid'
-          })
-        }
-      });
+    //   jwt.verify(token, config.secret, (err, decoded) => { //verify the token
+    //     if (err){
+    //       return res.json({
+    //         success:false,
+    //         message: 'token is not valid'
+    //       })
+    //     }
+    //   });
       //find the session with the same token, sessions are created in the auth controller when one is logged in
       Session.findOne({
         where : {token:token}
@@ -235,6 +240,7 @@ isAny = (req, res, next) => {
             .then(data => {
               if(data.dataValues.role = "Student")
               {
+                console.log(data.dataValues.role)
                 next();
                 return;
               }

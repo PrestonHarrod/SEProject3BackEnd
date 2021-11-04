@@ -1,5 +1,5 @@
 const dbConfig = require("../config/db.config.js");
-const authJwt = require("../util/util.js");
+//const authJwt = require("../controllers/util.controller.js");
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -100,7 +100,5 @@ db.students.belongsTo(db.degrees, {
   foreignKey: 'degreeID'
 });
 
-module.exports = db, {
-  authJwt
-};
+module.exports = db
 

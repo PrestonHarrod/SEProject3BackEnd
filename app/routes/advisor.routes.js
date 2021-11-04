@@ -1,6 +1,6 @@
 module.exports = app => {
     const advisors = require("../controllers/advisor.controller.js");
-    const auth = require("../util/util.js");
+    const auth = require("../controllers/util.controller.js");
 
     var router = require("express").Router();
   
@@ -8,7 +8,7 @@ module.exports = app => {
     router.post("/", [auth.authenticate, auth.isAdmin], advisors.create);
   
     // Retrieve all advisors
-    router.get("/", [auth.authenticate, auth.isAny], advisors.findAll);
+    router.get("/", [auth.authenticate, auth.isAdminOrAdvisor], advisors.findAll);
   
     // Retrieve a single Advisor with id
     router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], advisors.findOne);

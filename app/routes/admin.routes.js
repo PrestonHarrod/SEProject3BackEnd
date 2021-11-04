@@ -1,6 +1,6 @@
 module.exports = app => {
     const admins = require("../controllers/admin.controller.js");
-    const auth = require("../util/util.js");
+    const auth = require("../controllers/util.controller.js");
   
     var router = require("express").Router();
   
