@@ -1,6 +1,7 @@
 const db = require("../models");
 const Session = db.sessions;
 const Advisor = db.advisors;
+const Admin = db.admins;
 const Student = db.students;
 const Op = db.Sequelize.Op;
 const authconfig = require('../config/auth.config.js');
@@ -48,8 +49,32 @@ exports.login = async (req, res) => {
         email = advisor.email;
         advisorID = advisor.advisorID;
         studentID = null;
+        adminID = null;
         userID = advisor.advisorID;
         fName = advisor.fName;
+        userFound = true;
+
+        }
+    }).catch(err => {
+        res.status(401).send({
+          message: err.message || "Error looking up User"
+        });
+        return;
+    });
+
+    //Look for admin in DB
+    let userFound = false;
+  await Admin.findOne({ where : {email:email}})
+    .then(data => {
+        if (data != null) {
+        let admin= data.dataValues;
+        token = jwt.sign({ id: admin.email }, authconfig.secret, {expiresIn: 86400}); // 24 hours
+        email = admin.email;
+        adminID = admin.adminID;
+        studentID = null;
+        advisorID = null
+        userID = admin.adminID;
+        fName = admin.fName;
         userFound = true;
 
         }
@@ -71,6 +96,7 @@ exports.login = async (req, res) => {
             token = jwt.sign({ id: student.email }, authconfig.secret, {expiresIn: 86400}); // 24 hours
             email = student.email;
             advisorID = null
+            adminID = null;
             studentID = student.studentID;
             userID  = student.studentID;
             fName = student.fName;
@@ -95,6 +121,7 @@ exports.login = async (req, res) => {
     token: token,
     advisorID : advisorID,
     studentID : studentID,
+    adminID : adminID,
     expireDate: tokenExpireDate
   };
   console.log(session.studentId)
@@ -104,6 +131,7 @@ exports.login = async (req, res) => {
         user : fName,
         studentID : studentID,
         advisorID: advisorID,
+        adminID : adminID,
         userId : userID,
         token : session.token
       };
