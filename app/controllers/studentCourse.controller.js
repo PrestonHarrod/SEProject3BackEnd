@@ -5,18 +5,16 @@ const Op = db.Sequelize.Op;
 // Create and Save a new degree
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.id) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
+    
   
     // Create a Degree
     const studentCourse = {
       id: req.body.id,
       studentID: req.body.studentID,     
-      courseID: req.body.id
+      courseID: req.body.courseID,
+      semesterID: req.body.semesterID,
+      grade: req.body.grade,
+      status: req.body.status
    
     };
   
@@ -26,6 +24,7 @@ exports.create = (req, res) => {
         res.send(data);
       })
       .catch(err => {
+
         res.status(500).send({
           message:
             err.message || "Some error occurred while creating the Degree."
@@ -33,9 +32,11 @@ exports.create = (req, res) => {
       });
   }
 
+
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const studentID = req.query.studentID;
+    const studentID = req.params.studentID;
+    console.log(studentID + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     var condition = studentID ? {
       studentID: {
         [Op.like]: `%${studentID}%`
@@ -57,8 +58,7 @@ exports.findAll = (req, res) => {
 
 // Find a single Degree with an id
 exports.findOne = (req, res) => {
-    const id = req.query.id;
-
+    const id = req.params.id;
 
     StudentCourses.findByPk(id)
     .then(data => {
@@ -74,9 +74,9 @@ exports.findOne = (req, res) => {
 
 // Update a Degree by the id in the request
 exports.update = (req, res) => {
-    const id = req.query.id;
+    const id = req.params.id;
   
-    StudentCourses.update(req.body, {
+    StudentCourses.update(req.body, { updatedAt: db.Sequelize.NOW,
       where: { id: id }
     })
       .then(num => {
@@ -99,7 +99,7 @@ exports.update = (req, res) => {
 
 // Delete a degree with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.query.id;
+    const id = req.params.id;
   
     StudentCourses.destroy({
       where: { id: id }
