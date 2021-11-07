@@ -63,7 +63,6 @@ exports.login = async (req, res) => {
     });
 
     //Look for admin in DB
-    let userFound = false;
   await Admin.findOne({ where : {email:email}})
     .then(data => {
         if (data != null) {
