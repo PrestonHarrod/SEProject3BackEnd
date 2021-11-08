@@ -17,10 +17,10 @@ module.exports = app => {
     router.put("/:id", [auth.authenticate, auth.isAny], studentCourses.update);
   
     // Delete a Tutorial with id
-    router.delete("/:id", [auth.authenticate, auth.isAny], studentCourses.delete);
+    router.delete("/", [auth.authenticate, auth.isAny], studentCourses.delete);
   
     // Delete all studentCourses
-    router.delete("/", [auth.authenticate, auth.isAny], studentCourses.deleteAll);
+    router.delete("/:id", [auth.authenticate, auth.isAny], studentCourses.deleteAll);
   
     app.use('/api/studentCourses', router);
   };

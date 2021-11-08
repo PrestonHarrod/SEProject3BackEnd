@@ -99,10 +99,11 @@ exports.update = (req, res) => {
 
 // Delete a degree with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id;
+    const courseID = req.query.courseID;
+    console.log(courseID)
   
     StudentCourses.destroy({
-      where: { id: id }
+      where: { courseID: courseID }
     })
       .then(num => {
         if (num == 1) {
@@ -111,21 +112,22 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete degree with id=${id}. Maybe degree was not found!`
+            message: `Cannot delete degree with id=${courseID}. Maybe degree was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete degree with id=" + id
+          message: "Could not delete degree with id=" + courseID
         });
       });
   };
 
 // Delete all degrees from the database.
 exports.deleteAll = (req, res) => {
+  const courseID = req.query.courseID;
   StudentCourses.destroy({
-      where: {},
+      where: {courseID: courseID},
       truncate: false
     })
       .then(nums => {
