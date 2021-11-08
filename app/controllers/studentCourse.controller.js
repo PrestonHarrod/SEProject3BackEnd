@@ -35,7 +35,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Degrees from the database.
 exports.findAll = (req, res) => {
-    const studentID = req.params.studentID;
+    const studentID = req.query.studentID;
     console.log(studentID + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     var condition = studentID ? {
       studentID: {
