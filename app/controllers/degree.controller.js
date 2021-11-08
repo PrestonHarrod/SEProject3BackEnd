@@ -111,10 +111,8 @@ exports.update = (req, res) => {
 
 // Delete a degree with the specified id in the request
 exports.delete = (req, res) => {
-  console.log("HERE!")
-    console.log(req.query)
-    const degreeID = req.query.degreeID;
-    console.log(degreeID)
+    console.log(req)
+    const degreeID = req.params.id;
 
   
     Degree.destroy({
