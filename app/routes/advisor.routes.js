@@ -14,7 +14,7 @@ module.exports = app => {
     router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], advisors.findOne);
   
     // Update a Advisor with id
-    router.put("/:id", [auth.authenticate, auth.isAdminOrAdvisor], advisors.update);
+    router.put("/:id", [auth.authenticate, auth.isAdmin], advisors.update);
   
     // Delete a Advisor with id
     router.delete("/:id", [auth.authenticate, auth.isAdmin], advisors.delete);
