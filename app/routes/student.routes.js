@@ -11,10 +11,10 @@ module.exports = app => {
     router.get("/", [auth.authenticate, auth.isAdminOrAdvisor], students.findAll);
   
     // Retrieve a single Tutorial with id
-    router.get("/:id", [auth.authenticate, auth.isAny], students.findOne);
+    router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], students.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id", [auth.authenticate, auth.isAny], students.update);
+    router.put("/:id", [auth.authenticate, auth.isAdminOrAdvisor], students.update);
   
     // Delete a Tutorial with id
     router.delete("/:id", [auth.authenticate, auth.isAdminOrAdvisor], students.delete);
