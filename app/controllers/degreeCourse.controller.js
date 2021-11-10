@@ -5,20 +5,15 @@ const Op = db.Sequelize.Op;
 // Create and Save a new degree
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.id) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
   
     // Create a Degree
     const degreeCourse = {
       id: req.body.id,
       degreeID: req.body.degreeID,     
-      courseID: req.body.id
-   
+      courseID: req.body.courseID
     };
+
+    console.log(degreeCourse.id + " " + degreeCourse.degreeID + " " + degreeCourse.courseID);
   
     // Save degree in the database
     DegreeCourses.create(degreeCourse)
@@ -98,11 +93,12 @@ exports.update = (req, res) => {
 
 // Delete a degree with the specified id in the request
 exports.delete = (req, res) => {
-    const degreeID = req.query.degreeID;
-    console.log(req.query.degreeID + '!!!!!!!!!!!!!!!!!!')
-  
+    console.log("Rererererererererererere");
+    const id = req.params.id;
+    console.log(req.params.id + '!!!!!!!!!!!!!!!!!!')
+
     DegreeCourses.destroy({
-      where: { degreeID: degreeID }
+      where: { id: id }
     })
       .then(num => {
         if (num == 1) {
@@ -111,13 +107,13 @@ exports.delete = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete degree with id=${degreeID}. Maybe degree was not found!`
+            message: `Cannot delete degree with id=${id}. Maybe degree was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete degree with id=" + degreeID
+          message: "Could not delete degree with id=" + id
         });
       });
   };
