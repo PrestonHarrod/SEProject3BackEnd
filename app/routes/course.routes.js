@@ -12,7 +12,7 @@ module.exports = app => {
   
   
     // Retrieve a single Tutorial with id
-    router.get("/:id", [auth.authenticate, auth.isAdminOrAdvisor], courses.findOne);
+    router.get("/:id", [auth.authenticate, auth.isAny], courses.findOne);
   
     // Update a Tutorial with id
     router.put("/:id", [auth.authenticate, auth.isAdminOrAdvisor], courses.update);

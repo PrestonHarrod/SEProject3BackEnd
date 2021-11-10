@@ -63,7 +63,7 @@ db.studentCourses.belongsTo(db.students, {
 });
 
 db.degrees.hasMany(db.degreeCourses, {as: "degreeCourses"});
-db.studentCourses.belongsTo(db.degrees, {
+db.degreeCourses.belongsTo(db.degrees, {
   foreignKey: "degreeID",
   as: "degree",
 });
